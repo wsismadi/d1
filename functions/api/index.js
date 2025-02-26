@@ -28,7 +28,7 @@ export async function onRequest(context) {
     
     if (path === '/api/' && method === 'POST') {
         const { key } = await request.json();
-        await DB.prepare("INSERT INTO data (key) VALUES (?)").bind(key).run();
+        await DB.prepare("INSERT INTO users (key) VALUES (?)").bind(key).run();
         return new Response('Data added', { status: 201 });
     }
 
@@ -37,7 +37,7 @@ export async function onRequest(context) {
         const { key } = await request.json();
         console.log(`PUT request - ID: ${id}, Key: ${key}`); // Log data
 
-        await DB.prepare("UPDATE data SET key = ? WHERE id = ?").bind(key, id).run();
+        await DB.prepare("UPDATE users SET key = ? WHERE id = ?").bind(key, id).run();
         return new Response('Data updated', { status: 200 });
     }
 
@@ -46,7 +46,7 @@ export async function onRequest(context) {
         console.log(`DELETE request - ID: ${id}`); // Log ID
 
         try {
-            await DB.prepare("DELETE FROM data WHERE id = ?").bind(id).run();
+            await DB.prepare("DELETE FROM users WHERE id = ?").bind(id).run();
             return new Response('Data deleted', { status: 200, headers: corsHeaders });
         } catch (error) {
             return new Response(`Error: ${error.message}`, { status: 500, headers: corsHeaders });

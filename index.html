@@ -42,7 +42,7 @@
         async function createData() {
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
-            await fetch('/api', {
+            await fetch('/api/', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ name, email })
@@ -50,7 +50,7 @@
             fetchData();
         }
         async function deleteData(id) {
-            await fetch(`/api?id=${id}`, { method: 'DELETE' });
+            await fetch(`/api/?id=${id}`, { method: 'DELETE' });
             fetchData();
         }
         async function updateData(id, name, email) {

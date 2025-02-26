@@ -26,33 +26,43 @@ export async function onRequest(context) {
         return Response.json(results);
     }
     
-    if (path === '/api/' && method === 'POST') {
-        const { key } = await request.json();
-        await DB.prepare("INSERT INTO users (name, email) VALUES (?)").bind(name, email).run();
+ 
+// Method POST
+if (path === '/api/' && method === 'POST') {
+    try {
+        const { name, email } = await request.json();
+        await DB.prepare("INSERT INTO users (name, email) VALUES (?, ?)").bind(name, email).run();
         return new Response('Data added', { status: 201 });
+    } catch (error) {
+        return new Response(`Error: ${error.message}`, { status: 500, headers: corsHeaders });
     }
+}
 
-    if (path.startsWith('/api/') && method === 'PUT') {
-        const id = path.split('/').pop();
-        const { key } = await request.json();
-        console.log(`PUT request - ID: ${id}, Key: ${key}`); // Log data
-
-        await DB.prepare("UPDATE users SET key = ? WHERE id = ?").bind(key, id).run();
+// Method PUT
+if (path.startsWith('/api/') && method === 'PUT') {
+    const id = path.split('/').pop();
+    try {
+        const { name, email } = await request.json();
+        console.log(`PUT request - ID: ${id}, Name: ${name}, Email: ${email}`);
+        await DB.prepare("UPDATE users SET name = ?, email = ? WHERE id = ?").bind(name, email, id).run();
         return new Response('Data updated', { status: 200 });
+    } catch (error) {
+        return new Response(`Error: ${error.message}`, { status: 500, headers: corsHeaders });
     }
+}
 
-    if (path.startsWith('/api/') && method === 'DELETE') {
-        const id = path.split('/')[3]; // Mengambil ID dari URL
-        console.log(`DELETE request - ID: ${id}`); // Log ID
+if (path.startsWith('/api/') && method === 'DELETE') {
+    const id = path.split('/').pop(); // Mengambil ID dari URL
+    console.log(`DELETE request - ID: ${id}`);
 
-        try {
-            await DB.prepare("DELETE FROM users WHERE id = ?").bind(id).run();
-            return new Response('Data deleted', { status: 200, headers: corsHeaders });
-        } catch (error) {
-            return new Response(`Error: ${error.message}`, { status: 500, headers: corsHeaders });
-        }
+    try {
+        await DB.prepare("DELETE FROM users WHERE id = ?").bind(id).run();
+        return new Response('Data deleted', { status: 200, headers: corsHeaders });
+    } catch (error) {
+        return new Response(`Error: ${error.message}`, { status: 500, headers: corsHeaders });
     }
-    
+}
+
 
     return new Response('Not Found', { status: 404 });
 }

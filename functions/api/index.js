@@ -51,17 +51,27 @@ if (path.startsWith('/api/') && method === 'PUT') {
     }
 }
 
-if (path.startsWith('/api/') && method === 'DELETE') {
-    const id = path.split('/').pop(); // Mengambil ID dari URL
-    console.log(`DELETE request - ID: ${id}`);
+if (path === '/api/' && method === 'DELETE') {
+    const url = new URL(request.url);
+    const id = url.searchParams.get('id'); // Mengambil ID dari query parameter
+    console.log(`DELETE request - ID: ${id}`); // Logging ID
 
+    if (!id) {
+        return new Response('ID not provided', { status: 400, headers: corsHeaders });
+    }
     try {
-        await DB.prepare("DELETE FROM users WHERE id = ?").bind(id).run();
+        const result = await DB.prepare("DELETE FROM users WHERE id = ?").bind(id).run();
+        // Cek apakah ada baris yang terpengaruh (dihapus)
+        if (result.changes === 0) {
+            return new Response('No data found to delete', { status: 404, headers: corsHeaders });
+        }
         return new Response('Data deleted', { status: 200, headers: corsHeaders });
     } catch (error) {
+        console.error('Error during DELETE:', error);
         return new Response(`Error: ${error.message}`, { status: 500, headers: corsHeaders });
     }
 }
+
 
 
     return new Response('Not Found', { status: 404 });

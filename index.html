@@ -53,6 +53,7 @@
             await fetch(`/api/?id=${id}`, { method: 'DELETE' });
             fetchData();
         }
+        
         async function updateData(id, name, email) {
             document.getElementById('name').value = name;
             document.getElementById('email').value = email;

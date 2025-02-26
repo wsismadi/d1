@@ -14,7 +14,10 @@ export default {
         if (method === 'POST') {
             const { name, email } = await request.json();
             await env.DB.prepare('INSERT INTO users (name, email) VALUES (?, ?)').bind(name, email).run();
-            return new Response('Created', { status: 201 });
+            return new Response('Created', { status: 201,
+                headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET, POST, DELETE' } 
+
+             });
         }
 
         if (method === 'DELETE' && id) {

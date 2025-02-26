@@ -40,7 +40,9 @@ if (path === '/api/' && method === 'POST') {
 
 // Method PUT
 if (path.startsWith('/api/') && method === 'PUT') {
-    const id = path.split('/').pop();
+    // const id = path.split('/').pop();
+    const id = url.searchParams.get('id'); // Mengambil ID dari query parameter
+
     try {
         const { name, email } = await request.json();
         console.log(`PUT request - ID: ${id}, Name: ${name}, Email: ${email}`);

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CRUD App with Cloudflare Worker and D1</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        input, button { margin: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>CRUD Application with Cloudflare Worker and D1</h1>
+    <div>
+        <input type="text" id="name" placeholder="Name">
+        <input type="text" id="email" placeholder="Email">
+        <button onclick="createData()">Create</button>
+    </div>
+    <table>
+        <thead>
+            <tr><th>Name</th><th>Email</th><th>Actions</th></tr>
+        </thead>
+        <tbody id="data-list"></tbody>
+    </table>
+    <script>
+        async function fetchData() {
+            const res = await fetch('/api');
+            const data = await res.json();
+            const dataList = document.getElementById('data-list');
+            dataList.innerHTML = data.map(d => `
+                <tr>
+                    <td>${d.name}</td>
+                    <td>${d.email}</td>
+                    <td>
+                        <button onclick="updateData('${d.id}', '${d.name}', '${d.email}')">Edit</button>
+                        <button onclick="deleteData('${d.id}')">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        async function createData() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            await fetch('/api', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ name, email })
+            });
+            fetchData();
+        }
+        async function deleteData(id) {
+            await fetch(`/api?id=${id}`, { method: 'DELETE' });
+            fetchData();
+        }
+        async function updateData(id, name, email) {
+            document.getElementById('name').value = name;
+            document.getElementById('email').value = email;
+            await deleteData(id);
+        }
+        fetchData();
+    </script>
+</body>
+</html>

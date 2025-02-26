@@ -12,7 +12,6 @@ export async function onRequest(context) {
         'Access-Control-Allow-Headers': 'Content-Type',
     };
     
-
     if (method === 'OPTIONS') {
         return new Response(null, {
             status: 204,

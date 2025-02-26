@@ -28,7 +28,7 @@ export async function onRequest(context) {
     
     if (path === '/api/' && method === 'POST') {
         const { key } = await request.json();
-        await DB.prepare("INSERT INTO users (name, email) VALUES (?)").bind(key).run();
+        await DB.prepare("INSERT INTO users (name, email) VALUES (?)").bind(name, email).run();
         return new Response('Data added', { status: 201 });
     }
 

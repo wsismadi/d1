@@ -44,7 +44,7 @@
             await fetch('/api/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ key: name, email })
+                body: JSON.stringify({ name, email })
             });
 
             document.getElementById('name').value = '';
@@ -68,7 +68,7 @@
             await fetch(`/api/?id=${editId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ key: name, email })
+                body: JSON.stringify({ name, email })
             });
 
             document.getElementById('name').value = '';

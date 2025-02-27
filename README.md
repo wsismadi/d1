@@ -1,16 +1,16 @@
 # CRUD Cloudflare Worker & D1 database
 
-## 📂 Kategori
+## Kategori
 Edu
 
-## 📄 Deskripsi Singkat
+## Deskripsi Singkat
 Aplikasi CRUD sederhana implemantasi serverless, menggunakan Cloudflare Worker dan D1 database.
 
-## 🚀 Cara Menggunakan
+## Cara Menggunakan
 1. Clone repositori.
 2. Jalankan perintah berikut...
 
-## 📚 Referensi
+## Referensi
 - [Dokumentasi Resmi](https://workers.cloudflare.com/)
 - [Demo](https://crud.lab.donat.id)
 - [Tutorial Terkait](https://donat.id)

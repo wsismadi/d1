@@ -75,5 +75,5 @@ if (path === '/api/' && method === 'DELETE') {
 
 
 
-    return new Response('Not Found', { status: 404 });
+    return new Response('Gagal Koneksi', { status: 404 });
 }
